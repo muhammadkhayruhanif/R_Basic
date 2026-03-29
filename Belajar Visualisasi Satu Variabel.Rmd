@@ -1,0 +1,176 @@
+---
+title: "Belajar Visualisasi 1"
+author: "Muhammad Khayruhanif"
+date: "2026-03-25"
+output: html_document
+---
+
+```{r}
+library(readxl)
+
+data = read_xlsx("C:\\Users\\ASUS\\Downloads\\DATA PENDIDIKAN_ANREG.xlsx", sheet="Data")
+head(data)
+```
+
+```{r}
+library(ggplot2)
+
+bin <- ceiling(1 + 3.3 * log10(length(data)))
+
+ggplot(data=data, aes(x=Population)) +
+  geom_histogram(bins=bin, color="blue", fill="white")
+```
+
+bisa gunakan:
+after_stat(density)
+..density..
+```{r}
+bin <- ceiling(1 + 3.3 * log10(length(diamonds)))
+
+ggplot(data=diamonds, aes(x=price, y=after_stat(density))) +
+  geom_histogram(bins=bin, fill="white", color="red") +
+  geom_density(color="orange", size=1)
+```
+
+```{r}
+head(diamonds)
+```
+
+```{r}
+summary(diamonds)
+```
+
+```{r}
+ggplot(data=diamonds, aes(x=price, fill=cut)) +
+  geom_histogram(bins=bin)
+```
+
+```{r}
+ggplot(data=diamonds, aes(x=price)) +
+  geom_histogram(bins=bin) +
+  geom_vline(aes(xintercept=mean(price), color="red", linetype="dashed", size=1))
+```
+
+```{r}
+ggplot(data=diamonds, aes(x=price)) +
+  geom_histogram(bins=bin) +
+  labs(title="Histogram Harga Berlian",
+       subtitle="Data bersumber dari dataset R",
+       x="harga",
+       y="Frekuensi") +
+  theme_minimal()
+```
+
+```{r}
+ggplot(data=diamonds, aes(x=price)) +
+  geom_histogram(bins=bin, fill="red") +
+  facet_wrap(~ cut)
+```
+
+bisa pakai:
+coord_flip()
+theme()
+angle = derajat
+vjust = 
+hjust =
+```{r}
+ggplot(data=diamonds, aes(x=price)) +
+  geom_histogram(bins=bin, fill="black") +
+  facet_grid(color ~ cut) +
+  theme(axis.text.x=element_text(angle=45, vjust=1, hjust=1))
+```
+
+```{r}
+ggplot(data=diamonds, aes(x=price)) +
+  geom_density(adjust=5)
+```
+
+```{r}
+ggplot(data=diamonds, aes(x=price)) +
+  geom_density(fill="firebrick", color="firebrick", alpha=0.5)
+```
+
+```{r}
+ggplot(data=diamonds, aes(x=price, fill=cut)) +
+  geom_density(adjust=5, alpha=0.2)
+```
+
+```{r}
+ggplot(data=diamonds, aes(x=price, fill=cut, color=cut)) +
+  geom_density(adjust=5) +
+  facet_wrap(~ cut) +
+  theme_classic()
+```
+
+```{r}
+ggplot(data=diamonds, aes(x=price)) +
+  geom_density(adjust=5) +
+  annotate("text", x=1700, y=0.00017, label="Puncak harga", color="red", fontface="bold") +
+  annotate("segment", x=1650, xend=1800, y=0.00014, yend=0.000163, color="black", size=1, arrow=arrow(length=unit(0.2, "cm")))
+```
+
+```{r}
+ggplot(data=diamonds, aes(x=price)) +
+  geom_boxplot()
+```
+
+```{r}
+ggplot(data=diamonds, aes(x=price, fill=cut)) +
+  geom_boxplot(color="red")
+```
+
+```{r}
+ggplot(data=diamonds, aes(x=price, fill=cut)) +
+  geom_boxplot(color="red") +
+  facet_wrap(~ cut)
+```
+
+notch = takikan
+```{r}
+ggplot(data=diamonds, aes(x=cut, y=price)) +
+  geom_boxplot(notch=TRUE)
+```
+
+```{r}
+ggplot(data=diamonds, aes(x=cut, y=price)) +
+  geom_boxplot(outlier.colour="red", outlier.shape=4, outlier.size=1)
+```
+
+Urutan berlaku
+```{r}
+ggplot(data=diamonds, aes(x=cut, y=price)) +
+  geom_jitter(width=0.2, alpha=0.2, color="yellow") +
+  geom_boxplot(outlier.shape = NA, color="red")
+```
+
+```{r}
+ggplot(data=diamonds, aes(x=cut)) +
+  geom_bar()
+```
+
+```{r}
+ggplot(data=diamonds, aes(x=cut, fill=color)) +
+  geom_bar()
+```
+
+```{r}
+ggplot(data=diamonds, aes(x=reorder(cut, cut, function(x) - length(x)))) +
+  geom_bar() +
+  labs(title="Bar Chart Potongan Diamond",
+       x="Jenis potongan")
+```
+
+```{r}
+data_ringkas <- data.frame(kategori=c("A", "B", "C"), nilai=c(10, 34, 21))
+
+ggplot(data=data_ringkas, aes(x=kategori, y=nilai)) +
+  geom_col(fill="navy") +
+  coord_flip()
+```
+
+```{r}
+ggplot(data=diamonds, aes(x = "", fill = cut)) +
+  geom_bar(width = 1) +
+  coord_polar("y", start = 0)
+```
+
